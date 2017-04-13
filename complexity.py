@@ -24,7 +24,11 @@ def complexity(essay_text):
         #print("Sentence: ", s)
         wds = nltk.tokenize.word_tokenize(s)
         #print("Word list: ", wds)
-        l = len(wds)
+        l = 0 # store sentence length
+        for i in wds:
+            if i not in list(string.punctuation):
+                l += 1
+                
         #print("Length=", l)
         if l <= 10:
             short += 1
