@@ -65,15 +65,12 @@ def organization(ids,essays,final_features):
         scores[k] = scores[k]/essay_len
         if scores[k] >= 0.25:
             low[k] = scores[k]
-            final_features[k] = {}
             final_features[k]["organization"] = "low"
         elif scores[k] < 0.75:
             medium[k] = scores[k]
-            final_features[k] = {}
             final_features[k]["organization"] = "medium"
         else:
             high[k] = scores[k]
-            final_features[k] = {}
             final_features[k]["organization"] = "high"
 
 def tag_POS(essay_text):
@@ -202,10 +199,17 @@ def complexity(essay_text):
 def combined(file_path):
     df = pd.read_csv(file_path)
     ids = df["essay_id"]
+	scores = df["rater1_domain1"]
     #PRE-PROCESSING
     essays = df["essay"].str.lower()
     
     final_features = {}
+	
+	print("adding given scores")
+    for k,s in zip(ids,scores):
+        final_features[k] = {}
+        final_features[k]["score"] = s
+	
     print("running org")
     org_results = organization(ids,essays,final_features)
     
