@@ -9,6 +9,7 @@ def dict_to_csv(feature_dict):
         for key in feature_dict:
             row = []
 			row.append(key)
+			row.append(feature_dict[key]["score"])
             row.append(feature_dict[key]["organization"])
             row.append(feature_dict[key]["pos_adjadv"])
             row.append(feature_dict[key]["pos_noun"])
