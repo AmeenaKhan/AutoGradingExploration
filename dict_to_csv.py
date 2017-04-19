@@ -2,11 +2,10 @@ import csv
 
 def dict_to_csv(feature_dict):
 	with open('features.csv','w') as csvfile:
-        writer = csv.writer(csvfile, delimiter=' ',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer = csv.writer(csvfile, delimiter=',')
         #init_row = ["essay_id", "org_score", "pos_score", "complex_score"]
-        writer.writerow([["essay_id","org_score", "pos_adjadv" , "pos_noun", "pos_pronoun","pos_verb","pos_other", "pos_nums", "complex_short","complex_medium","complex_long"]])
-        for key in feature_dict:
+        writer.writerow(["essay_id","score","org_score", "pos_adjadv" , "pos_noun", "pos_pronoun","pos_verb","pos_other", "pos_nums", "complex_short","complex_medium","complex_long"])
+       	for key in feature_dict:
             row = []
 			row.append(key)
 			row.append(feature_dict[key]["score"])
@@ -20,6 +19,5 @@ def dict_to_csv(feature_dict):
             row.append(feature_dict[key]["complex_short"])
             row.append(feature_dict[key]["complex_medium"])
             row.append(feature_dict[key]["complex_long"])
-            row = [row]
-            print(row)
             writer.writerow(row)
+	csvfile.close()
