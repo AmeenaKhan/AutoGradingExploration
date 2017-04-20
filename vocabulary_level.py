@@ -25,16 +25,16 @@ from sklearn.feature_extraction.text import TfidfTransformer
 import nltk
 
 
-# # This code clean the essays
+# # This code cleans the essays by:
 # 
-# ## It removes:
-# 
-# 1. Stopwords
+# 1. Removning Stopwords
 # 2. Stemming
-# 3. puts everything in lowercase
+# 3. removing numerical values
+# 4. puts everything in lowercase
 
 # In[2]:
 
+#this block of code is for preprocessing the data you only need to run this once
 def clean_Essay( raw_review ):
     stemmer = nltk.stem.SnowballStemmer('english')
     # Function to convert a raw review to a string of words
@@ -57,11 +57,10 @@ def clean_Essay( raw_review ):
     # 7. Join the words back into one string separated by space, 
     # and return the result.
     return( " ".join( meaningful_words ))
-
-
-# In[3]:
-
 #this is for setting up the data only if CSV file not avaible
+#train_all_sets.csv is the data file from the keggle website for short answer
+#after being saved as a csv file using excel.
+#it will be uploaded to the git repository 
 df = pd.read_csv("train_all_sets.csv", index_col=False)
 df.columns
 sets = [3,4,7,8,9]
@@ -72,19 +71,20 @@ df['EssayText'] = df['EssayText'].apply(lambda x: clean_Essay(x))#check cell abo
 df[df.isnull().any(axis=1)]
 #this is to drop NaN values
 df.dropna(axis=0,how='any', inplace=True)
-df.to_csv("English_cleaned.csv",index=False)#save the file to CSV
+#save the file to CSV
+df.to_csv("English_cleaned.csv",index=False)
+#English_cleaned.csv will also be uploaded in the github repository
 
 
-# In[4]:
-
-#if you just want to load the dataframe and see results then call this
-df = pd.read_csv("English_cleaned.csv", index_col=False)
-
+# # main_classifier and main_grade_assign 
+# ### are the only two main functions that you need to combine in the pipeline.
 
 # In[5]:
 
 #this is a sample classifier based upon the cleaned english datasets
-def classifier(text):
+def main_classifier(text):
+#if you just want to load the dataframe and see results then call this
+    df = pd.read_csv("English_cleaned.csv", index_col=False)
     pipeline = Pipeline([
         ('vectorizer',  CountVectorizer()),
         ('classifier',  MultinomialNB()) ])
@@ -95,9 +95,11 @@ def classifier(text):
 # In[6]:
 
 #give vocabulary grade level
-def grade_assign(text):
-    print (textstat.automated_readability_index(text),textstat.flesch_kincaid_grade(text))
+def main_grade_assign(text):
+    return textstat.automated_readability_index(text)
 
+
+# ## The rest of the code below is just to see the accuracy of different classifiers we tried
 
 # In[39]:
 
