@@ -14,7 +14,7 @@ def organization(ids,essays,final_features):
     #PRE-PROCESSING
     ##essays = df["essay"].str.lower()
     #removing puctuation 
-	m=0
+    m=0
     for m in range(len(essays)):
         essays[m] = " ".join(c for c in word_tokenize(essays[m]) if c not in list(string.punctuation))
   
@@ -199,17 +199,22 @@ def complexity(essay_text):
 def combined(file_path):
     df = pd.read_csv(file_path)
     ids = df["essay_id"]
-	scores = df["rater1_domain1"]
+    scores = df["rater1_domain1"]
+    sets = df["essay_set"]
     #PRE-PROCESSING
     essays = df["essay"].str.lower()
     
     final_features = {}
-	
-	print("adding given scores")
+
+    print("adding given scores")
     for k,s in zip(ids,scores):
         final_features[k] = {}
         final_features[k]["score"] = s
-	
+        
+    print("adding essay set numbers")
+    for k,s in zip(ids, sets):
+        final_features[k]["set"] = s
+
     print("running org")
     org_results = organization(ids,essays,final_features)
     
