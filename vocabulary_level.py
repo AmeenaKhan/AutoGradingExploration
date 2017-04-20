@@ -34,7 +34,7 @@ import nltk
 
 # In[2]:
 
-#this block of code is for preprocessing the data you only need to run this once
+#this block of code is for preprocessing the data you only need to run this once if you don't have the .csv files
 def clean_Essay( raw_review ):
     stemmer = nltk.stem.SnowballStemmer('english')
     # Function to convert a raw review to a string of words
@@ -84,6 +84,7 @@ df.to_csv("English_cleaned.csv",index=False)
 #this is a sample classifier based upon the cleaned english datasets
 def main_classifier(text):
 #if you just want to load the dataframe and see results then call this
+#just make sure that English_clean.csv is in the same directory you are in
     df = pd.read_csv("English_cleaned.csv", index_col=False)
     pipeline = Pipeline([
         ('vectorizer',  CountVectorizer()),
