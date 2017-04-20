@@ -271,8 +271,8 @@ def combined(file_path):
     
     print("running pred_ score and vocab")
     for k,j in zip(ids,essays):
-        #pscore = pred_score(j)
-        #final_features[k]["pred_score"] = pscore
+        pscore = pred_score(j)
+        final_features[k]["pred_score"] = pscore
         
         vocab = vocab_grade(j)
         final_features[k]["vocab_level"] = vocab
