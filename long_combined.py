@@ -194,6 +194,21 @@ def complexity(essay_text):
     # return three ratios for three features
     return [short/total, med/total, long/total]
 
+'''
+def pred_score(text):
+#if you just want to load the dataframe and see results then call this
+#just make sure that English_clean.csv is in the same directory you are in
+    df = pd.read_csv("English_cleaned.csv", index_col=False)
+    pipeline = Pipeline([
+        ('vectorizer',  CountVectorizer()),
+        ('classifier',  MultinomialNB()) ])
+    pipeline.fit(df['EssayText'].values, df['Score1'].values)
+    return pipeline.predict(text)[0] # produce predicted score
+'''
+
+def vocab_grade(text):
+    return textstat.automated_readability_index(text)
+
 #Parameter file path to csv data as a string
 #Returns dictionary of dictionary of all features *NOTE:pos and complex features are broken down into individual key and vals*
 def combined(file_path):
@@ -235,5 +250,13 @@ def combined(file_path):
         final_features[k]["complex_medium"] = complex_score[1]
         final_features[k]["complex_long"] = complex_score[2]
     
+	print("running vocab")
+    for k,j in zip(ids,essays):
+        #pscore = pred_score(j)
+        #final_features[k]["pred_score"] = pscore
+        
+        vocab = vocab_grade(j)
+        final_features[k]["vocab_level"] = vocab
+        
     return final_features
     
