@@ -246,7 +246,7 @@ def combined(file_path):
     
     print("running pos")
     # read baseline values for comparison
-    base = pd.read_csv("Short-POS-baselines.csv")
+    base = pd.read_csv("Long-POS-baselines.csv")
     for k,j in zip(ids,essays):
         pos_score = tag_POS(j) # get original POS ratios
         setnum = final_features[k]["set"]
