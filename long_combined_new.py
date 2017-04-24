@@ -238,11 +238,18 @@ def prompt_relevance(ids,essays,sets,final_features):
     for k,j,i in zip(ids,essays,sets):
         set_index = i-1
         points = 0
-        for i in j.split():
-            if i in prompts[set_index]:
-                points = points + 1
-        final_features[k]["prompt_relevance"] = points
-
+        if(type(j)!=float):
+            for i in j.split():
+                if i in prompts[set_index]:
+                    points = points + 1
+            points = points / len(prompts[set_index])
+        if (points < 0.05):
+            final_features[k]["prompt_relevance"] = 0
+        elif (points < 0.8):
+            final_features[k]["prompt_relevance"] = 1
+        else:
+            final_features[k]["prompt_relevance"] = 2
+	
 #Parameter file path to csv data as a string
 #Returns dictionary of dictionary of all features *NOTE:pos and complex features are broken down into individual key and vals*
 def combined(file_path):
