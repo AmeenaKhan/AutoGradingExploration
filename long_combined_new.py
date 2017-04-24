@@ -220,6 +220,29 @@ def pred_score(text):
 def vocab_grade(text):
     return textstat.automated_readability_index(text)
 
+def prep_prompt(prompt_path):
+    df = pd.read_csv(prompt_path)
+    prompts = df["prompt"].str.lower()
+    for m in range(len(prompts)):
+        prompts[m] = " ".join(c for c in word_tokenize(prompts[m]) if c not in list(string.punctuation))
+    stop = set(stopwords.words('english'))
+    for m in range(len(prompts)):
+        prompts[m] = " ".join(c for c in word_tokenize(prompts[m]) if c not in list(stop))
+    return prompts
+
+def prompt_relevance(ids,essays,sets,final_features):
+    for m in range(len(essays)):
+        essays[m] = " ".join(c for c in word_tokenize(essays[m]) if c not in list(string.punctuation))
+  
+    prompts = prep_prompt("long_prompts.csv")
+    for k,j,i in zip(ids,essays,sets):
+        set_index = i-1
+        points = 0
+        for i in j.split():
+            if i in prompts[set_index]:
+                points = points + 1
+        final_features[k]["prompt_relevance"] = points
+
 #Parameter file path to csv data as a string
 #Returns dictionary of dictionary of all features *NOTE:pos and complex features are broken down into individual key and vals*
 def combined(file_path):
@@ -285,6 +308,11 @@ def combined(file_path):
         
         vocab = vocab_grade(j)
         final_features[k]["vocab_level"] = vocab
-        
+    
+    print("running prompt relevance")
+    prompt_results = prompt_relevance(ids,essays,sets,final_features)
+    
+    print("FINISHED")
+    
     return final_features
     
