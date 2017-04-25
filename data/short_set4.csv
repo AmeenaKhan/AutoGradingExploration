@@ -1,4 +1,4 @@
-essay_id,set,score,org_score,pos_adjadv,pos_noun,pos_pronoun,pos_verb,pos_other,pos_nums,complex_short,complex_medium,complex_long,vocab_level
+essay_id,set,score,org_score,pos_adjadv,pos_noun,pos_pronoun,pos_verb,pos_other,pos_nums,complex_short,complex_medium,complex_long,vocab_level,pred_score
 8192,4,0,1,2,2,3,2,2,2,0.0,1.0,0.0,15.8,0
 8193,4,1,1,2,2,3,2,2,2,0.0,0.0,1.0,14.6,0
 8194,4,1,1,2,3,3,2,2,2,0.0,0.0,1.0,24.9,0
