@@ -81,15 +81,17 @@ def organization(file_path):
     
 
 
-# In[9]:
+# trigrams and finall scores combining all the scores(unigrams, bigrams and trigrams):
 
     for k,j in zip(ids,sub_essay):
         points2=0
+        essay_len = len(j)
         if(type(j)!=float):
             for i in j.split():
                 if i in trigram_org:
                     points2 = points2 + trigram_org[i]
             scores[k] += points2
+        scores[k]= scores[k]/essay_len
     
 
 
