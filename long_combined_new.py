@@ -249,7 +249,17 @@ def prompt_relevance(ids,essays,sets,final_features):
             final_features[k]["prompt_relevance"] = 1
         else:
             final_features[k]["prompt_relevance"] = 2
-	
+
+def essay_length(ids,essays,final_features):
+    for m in range(len(essays)):
+        essays[m] = " ".join(c for c in word_tokenize(essays[m]) if c not in list(string.punctuation))
+    
+    for k,j in zip(ids,essays):
+        length = 0
+        for x in j.split():
+            length += 1 
+        final_features[k]["total_length"]=length
+		
 #Parameter file path to csv data as a string
 #Returns dictionary of dictionary of all features *NOTE:pos and complex features are broken down into individual key and vals*
 def combined(file_path):
@@ -338,6 +348,9 @@ def combined(file_path):
     print("running prompt relevance")
     prompt_results = prompt_relevance(ids,essays,sets,final_features)
     
+	print("total length")
+    essay_length(ids,essays,final_features)
+	
     print("FINISHED")
     
     return final_features
