@@ -5,7 +5,7 @@ def dict_to_csv(feature_dict):
         filename = 'long_set' + str(k) + '.csv'
         with open(filename,'w') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
-            writer.writerow(["essay_id", "set", "score", "org_score", "pos_adjadv", "pos_noun", "pos_pronoun", "pos_verb", "pos_other", "pos_nums", "complex_short", "complex_medium", "complex_long", "vocab_level"])
+            writer.writerow(["essay_id", "set", "score", "org_score", "pos_adjadv", "pos_noun", "pos_pronoun", "pos_verb", "pos_other", "pos_nums", "complex_short", "complex_medium", "complex_long", "vocab_level", "prompt_relevance","total_length"])
             for key in feature_dict[k]:
                 row = []
                 row.append(key)
@@ -23,6 +23,8 @@ def dict_to_csv(feature_dict):
                 row.append(feature_dict[k][key]["complex_long"])
                 row.append(feature_dict[k][key]["vocab_level"])
                 row.append(feature_dict[k][key]["predicted_score"])
+                row.append(feature_dict[k][key]["prompt_relevance"])
+                row.append(feature_dict[k][key]["total_length"])
                 writer.writerow(row)
     
     csvfile.close()
