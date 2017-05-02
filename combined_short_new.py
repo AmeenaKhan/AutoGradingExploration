@@ -345,11 +345,30 @@ def combined(file_path):
         final_features[k]["pos_nums"] = diff[5]
     
     print("running complexity")
+    # read baseline values for comparison
+    compbase = pd.read_csv("Short-Complexity-baselines.csv")
     for k,j in zip(ids,essays):
-        complex_score = complexity(j)
-        final_features[k]["complex_short"] = complex_score[0]
-        final_features[k]["complex_medium"] = complex_score[1]
-        final_features[k]["complex_long"] = complex_score[2]
+        complex_score = complexity(j) #get original complexity scores
+        setnum = final_features[k]["set"]
+        diff = Complexity_diff(setnum, complex_score, compbase)
+        #put diffs into 4 buckets - close to baseline, medium-close, medium-far, and farthest from baseline
+        # the distinction between buckets is arbitrary right now and could be refined
+        
+        i = 0
+        while(i < len(diff)):
+            if diff[i] < 0.05:
+                diff[i] = 4 #close
+            elif diff[i] < 0.10:
+                diff[i] = 3
+            elif diff[i] < 0.50:
+                diff[i] = 2
+            else:
+                diff[i] = 1 #farthest
+            i += 1
+            
+        final_features[k]["complex_short"] = diff[0]
+        final_features[k]["complex_medium"] = diff[1]
+        final_features[k]["complex_long"] = diff[2]
     
     print("running pred_ score and vocab")
     for k,j in zip(ids,essays):
