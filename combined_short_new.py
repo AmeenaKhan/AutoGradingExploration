@@ -296,6 +296,16 @@ def prompt_relevance(ids,essays,sets,final_features):
                     points = points + 1
         final_features[k]["prompt_relevance"] = points
 
+def essay_length(ids,essays,final_features):
+    for m in range(len(essays)):
+        essays[m] = " ".join(c for c in word_tokenize(essays[m]) if c not in list(string.punctuation))
+    
+    for k,j in zip(ids,essays):
+        length = 0
+        for x in j.split():
+            length += 1 
+        final_features[k]["total_length"]=length
+        
 def combined(file_path):
     df = pd.read_csv(file_path)
     ids = df["Id"]
@@ -380,6 +390,9 @@ def combined(file_path):
         
     print("running prompt relevance")
     prompt_results = prompt_relevance(ids,essays,sets,final_features)
+    
+    print("total length")
+    essay_length(ids,essays,final_features)
     
     print("FINISHED")
     return final_features
