@@ -182,6 +182,14 @@ def POS_diff(setnum, pos_vals, base_df):
     diffs.append(abs(pos_vals[4] - base_df.loc[setnum-1]['Other']))
     diffs.append(abs(pos_vals[5] - base_df.loc[setnum-1]['Nums']))
     return diffs
+    
+def Complexity_diff(setnum, comp_vals, base_df):
+    """Calculates and returns the difference between the complexity values and the baseline for good essays"""
+    diffs = []
+    diffs.append(abs(comp_vals[0] - base_df.loc[setnum-1]['Short']))
+    diffs.append(abs(comp_vals[1] - base_df.loc[setnum-1]['Medium']))
+    diffs.append(abs(comp_vals[2] - base_df.loc[setnum-1]['Long']))
+    return diffs
 
 def complexity(essay_text):
     """Calculates the length of each sentence in the essay (may only be applicable to longer essay responses, 
